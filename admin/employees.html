@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Dayflow - Employee Management</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css">
+
+    <style>
+
+        /* =====================================================
+           EMPLOYEE MANAGEMENT
+           ===================================================== */
+
+        .employee-page {
+            padding: 30px;
+        }
+
+        .employee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .employee-header h1 {
+            margin: 0;
+        }
+
+        .employee-header p {
+            margin-top: 6px;
+            color: #777;
+        }
+
+        .search-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 13px 15px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #7c3aed;
+        }
+
+        .search-box button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 7px;
+            background: #7c3aed;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        /* EMPLOYEE TABLE */
+
+        .employee-table-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .employee-table th,
+        .employee-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .employee-table th {
+            background: #fafafa;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        .employee-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #7c3aed;
+            color: white;
+            font-weight: 700;
+        }
+
+        .employee-name {
+            font-weight: 600;
+        }
+
+        .employee-id {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .view-btn {
+            border: none;
+            background: #f3e8ff;
+            color: #7c3aed;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        /* PROFILE */
+
+        #employeeProfile {
+            display: none;
+        }
+
+        .back-btn {
+            border: none;
+            background: none;
+            color: #7c3aed;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .profile-header-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+            margin-bottom: 20px;
+        }
+
+        .large-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #7c3aed;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .profile-header-card h2 {
+            margin: 0 0 8px;
+        }
+
+        .profile-header-card p {
+            margin: 5px 0;
+            color: #777;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+        }
+
+        .profile-card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 13px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-label {
+            color: #777;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .salary-card {
+            grid-column: 1 / -1;
+        }
+
+        .salary-total {
+            font-size: 18px;
+            font-weight: 700;
+            padding-top: 18px;
+            border-top: 2px solid #eee;
+            margin-top: 10px;
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .salary-card {
+                grid-column: auto;
+            }
+
+            .employee-table {
+                min-width: 700px;
+            }
+
+            .employee-table-card {
+                overflow-x: auto;
+            }
+
+            .profile-header-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-mark">
+                D
+            </div>
+
+            <div>
+
+                <h2>Dayflow</h2>
+
+                <span>
+                    HR Management
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a
+                href="dashboard.html"
+                class="nav-item">
+
+                <span>▦</span>
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="employees.html"
+                class="nav-item active">
+
+                <span>👥</span>
+                Employees
+
+            </a>
+
+
+            <a
+                href="attendance.html"
+                class="nav-item">
+
+                <span>◷</span>
+                Attendance
+
+            </a>
+
+
+            <a
+                href="timeoff.html"
+                class="nav-item">
+
+                <span>▣</span>
+                Time Off
+
+            </a>
+
+
+            <a
+                href="payroll.html"
+                class="nav-item">
+
+                <span>₹</span>
+                Payroll
+
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-item">
+
+                <span>▤</span>
+                Reports
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="help-box">
+
+                <strong>
+                    Need Help?
+                </strong>
+
+                <p>
+                    Manage your workforce efficiently.
+                </p>
+
+            </div>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                ⇥ Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Employee Management
+                </h1>
+
+                <p id="currentDate"></p>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="notification-btn">
+
+                    🔔
+
+                    <span class="notification-count">
+                        3
+                    </span>
+
+                </button>
+
+
+                <div class="profile">
+
+                    <div class="avatar">
+                        HR
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong>
+                            HR Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- EMPLOYEE LIST -->
+
+        <section
+            id="employeeList"
+            class="employee-page">
+
+
+            <div class="employee-header">
+
+                <div>
+
+                    <h1>
+                        Employees
+                    </h1>
+
+                    <p>
+                        Search and manage employee profiles.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="addEmployee()">
+
+                    + Add Employee
+
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-card">
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="employeeSearch"
+                        placeholder="Search by employee name or ID..."
+                        onkeyup="searchEmployees()">
+
+                    <button
+                        onclick="searchEmployees()">
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="employee-table-card">
+
+                <table class="employee-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Employee
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Position
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="employeeTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- EMPLOYEE PROFILE -->
+
+        <section
+            id="employeeProfile"
+            class="employee-page">
+
+
+            <button
+                class="back-btn"
+                onclick="showEmployeeList()">
+
+                ← Back to Employees
+
+            </button>
+
+
+            <!-- PROFILE HEADER -->
+
+            <div class="profile-header-card">
+
+                <div
+                    class="large-avatar"
+                    id="profileAvatar">
+
+                    A
+
+                </div>
+
+
+                <div>
+
+                    <h2 id="profileName">
+                        -
+                    </h2>
+
+                    <p>
+                        Employee ID:
+                        <strong id="profileId">
+                            -
+                        </strong>
+                    </p>
+
+                    <p id="profilePosition">
+                        -
+                    </p>
+
+                    <p id="profileDepartment">
+                        -
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE INFORMATION -->
+
+            <div class="profile-grid">
+
+
+                <!-- PERSONAL -->
+
+                <div class="profile-card">
+
+                    <h3>
+                        Personal Information
+                    </h3>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Email
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileEmail">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Phone
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profilePhone">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Date of Birth
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileDob">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Gender
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileGender">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Address
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileAddress">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JOB -->
+
+                <div class="profile-card">
+
+                    <h3>
+                        Job Information
+                    </h3>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Department
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileJobDepartment">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Position
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileJobPosition">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Date of Joining
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileJoining">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Employment Type
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileEmploymentType">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Manager
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileManager">
+
+                            -
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SALARY -->
+
+                <div class="profile-card salary-card">
+
+                    <h3>
+                        Salary Information
+                    </h3>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Monthly Wage
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileWage">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Basic Salary
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileBasic">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            HRA
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileHra">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Standard Allowance
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileStandard">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Performance Bonus
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileBonus">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span class="detail-label">
+                            Leave Travel Allowance
+                        </span>
+
+                        <span
+                            class="detail-value"
+                            id="profileLta">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="salary-total">
+
+                        <div class="detail-row">
+
+                            <span>
+                                Total Wage
+                            </span>
+
+                            <span id="profileTotal">
+                                ₹0
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       EMPLOYEE DATA
+       ===================================================== */
+
+    const employees = [
+
+        {
+            id: "EMP001",
+            name: "Arun Kumar",
+            department: "IT",
+            position: "Software Developer",
+            status: "Active",
+
+            email: "arun@dayflow.com",
+            phone: "+91 98765 43210",
+            dob: "15 May 1998",
+            gender: "Male",
+            address: "Chennai, Tamil Nadu",
+
+            joining: "10 June 2025",
+            employmentType: "Full Time",
+            manager: "HR Admin",
+
+            wage: 60000
+        },
+
+
+        {
+            id: "EMP002",
+            name: "Priya S",
+            department: "HR",
+            position: "HR Executive",
+            status: "Active",
+
+            email: "priya@dayflow.com",
+            phone: "+91 98765 43211",
+            dob: "22 August 1999",
+            gender: "Female",
+            address: "Coimbatore, Tamil Nadu",
+
+            joining: "15 July 2025",
+            employmentType: "Full Time",
+            manager: "HR Admin",
+
+            wage: 50000
+        },
+
+
+        {
+            id: "EMP003",
+            name: "Karthik R",
+            department: "Finance",
+            position: "Accountant",
+            status: "Active",
+
+            email: "karthik@dayflow.com",
+            phone: "+91 98765 43212",
+            dob: "08 January 1997",
+            gender: "Male",
+            address: "Madurai, Tamil Nadu",
+
+            joining: "01 March 2024",
+            employmentType: "Full Time",
+            manager: "HR Admin",
+
+            wage: 45000
+        },
+
+
+        {
+            id: "EMP004",
+            name: "Divya M",
+            department: "Marketing",
+            position: "Marketing Executive",
+            status: "Active",
+
+            email: "divya@dayflow.com",
+            phone: "+91 98765 43213",
+            dob: "12 December 1998",
+            gender: "Female",
+            address: "Trichy, Tamil Nadu",
+
+            joining: "20 April 2025",
+            employmentType: "Full Time",
+            manager: "HR Admin",
+
+            wage: 55000
+        },
+
+
+        {
+            id: "EMP005",
+            name: "Rahul S",
+            department: "Operations",
+            position: "Operations Executive",
+            status: "Active",
+
+            email: "rahul@dayflow.com",
+            phone: "+91 98765 43214",
+            dob: "03 March 1996",
+            gender: "Male",
+            address: "Salem, Tamil Nadu",
+
+            joining: "05 January 2024",
+            employmentType: "Full Time",
+            manager: "HR Admin",
+
+            wage: 48000
+        }
+
+    ];
+
+
+    /* =====================================================
+       CURRENCY
+       ===================================================== */
+
+    function formatCurrency(value) {
+
+        return "₹" +
+            Math.round(value)
+                .toLocaleString("en-IN");
+
+    }
+
+
+    /* =====================================================
+       DISPLAY EMPLOYEES
+       ===================================================== */
+
+    function renderEmployees(list = employees) {
+
+        const tbody =
+            document.getElementById(
+                "employeeTableBody"
+            );
+
+
+        if (list.length === 0) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        class="no-result">
+
+                        No employee found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        tbody.innerHTML =
+            list.map(employee => `
+
+                <tr>
+
+                    <td>
+
+                        <div class="employee-cell">
+
+                            <div class="profile-avatar">
+
+                                ${employee.name
+                                    .charAt(0)
+                                    .toUpperCase()}
+
+                            </div>
+
+                            <div>
+
+                                <div class="employee-name">
+
+                                    ${employee.name}
+
+                                </div>
+
+                                <div class="employee-id">
+
+                                    ${employee.id}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        ${employee.department}
+                    </td>
+
+
+                    <td>
+                        ${employee.position}
+                    </td>
+
+
+                    <td>
+
+                        <span class="status-badge">
+
+                            ${employee.status}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="view-btn"
+                            onclick="viewEmployee('${employee.id}')">
+
+                            👁 View Profile
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `).join("");
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    function searchEmployees() {
+
+        const value =
+            document.getElementById(
+                "employeeSearch"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const filtered =
+            employees.filter(employee =>
+
+                employee.name
+                    .toLowerCase()
+                    .includes(value)
+
+                ||
+
+                employee.id
+                    .toLowerCase()
+                    .includes(value)
+
+            );
+
+
+        renderEmployees(filtered);
+
+    }
+
+
+    /* =====================================================
+       VIEW PROFILE
+       ===================================================== */
+
+    function viewEmployee(employeeId) {
+
+        const employee =
+            employees.find(
+                employee =>
+                    employee.id === employeeId
+            );
+
+
+        if (!employee) {
+            return;
+        }
+
+
+        document.getElementById(
+            "employeeList"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "employeeProfile"
+        ).style.display = "block";
+
+
+        /* HEADER */
+
+        document.getElementById(
+            "profileAvatar"
+        ).textContent =
+            employee.name
+                .charAt(0)
+                .toUpperCase();
+
+
+        document.getElementById(
+            "profileName"
+        ).textContent =
+            employee.name;
+
+
+        document.getElementById(
+            "profileId"
+        ).textContent =
+            employee.id;
+
+
+        document.getElementById(
+            "profilePosition"
+        ).textContent =
+            employee.position;
+
+
+        document.getElementById(
+            "profileDepartment"
+        ).textContent =
+            employee.department;
+
+
+        /* PERSONAL */
+
+        document.getElementById(
+            "profileEmail"
+        ).textContent =
+            employee.email;
+
+
+        document.getElementById(
+            "profilePhone"
+        ).textContent =
+            employee.phone;
+
+
+        document.getElementById(
+            "profileDob"
+        ).textContent =
+            employee.dob;
+
+
+        document.getElementById(
+            "profileGender"
+        ).textContent =
+            employee.gender;
+
+
+        document.getElementById(
+            "profileAddress"
+        ).textContent =
+            employee.address;
+
+
+        /* JOB */
+
+        document.getElementById(
+            "profileJobDepartment"
+        ).textContent =
+            employee.department;
+
+
+        document.getElementById(
+            "profileJobPosition"
+        ).textContent =
+            employee.position;
+
+
+        document.getElementById(
+            "profileJoining"
+        ).textContent =
+            employee.joining;
+
+
+        document.getElementById(
+            "profileEmploymentType"
+        ).textContent =
+            employee.employmentType;
+
+
+        document.getElementById(
+            "profileManager"
+        ).textContent =
+            employee.manager;
+
+
+        /* SALARY */
+
+        const wage =
+            employee.wage;
+
+
+        const basic =
+            wage * 0.50;
+
+
+        const hra =
+            basic * 0.50;
+
+
+        const standard =
+            wage * 0.08334;
+
+
+        const bonus =
+            wage * 0.04166;
+
+
+        const lta =
+            wage * 0.04166;
+
+
+        document.getElementById(
+            "profileWage"
+        ).textContent =
+            formatCurrency(wage);
+
+
+        document.getElementById(
+            "profileBasic"
+        ).textContent =
+            formatCurrency(basic);
+
+
+        document.getElementById(
+            "profileHra"
+        ).textContent =
+            formatCurrency(hra);
+
+
+        document.getElementById(
+            "profileStandard"
+        ).textContent =
+            formatCurrency(standard);
+
+
+        document.getElementById(
+            "profileBonus"
+        ).textContent =
+            formatCurrency(bonus);
+
+
+        document.getElementById(
+            "profileLta"
+        ).textContent =
+            formatCurrency(lta);
+
+
+        document.getElementById(
+            "profileTotal"
+        ).textContent =
+            formatCurrency(wage);
+
+    }
+
+
+    /* =====================================================
+       BACK TO EMPLOYEES
+       ===================================================== */
+
+    function showEmployeeList() {
+
+        document.getElementById(
+            "employeeProfile"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "employeeList"
+        ).style.display = "block";
+
+    }
+
+
+    /* =====================================================
+       ADD EMPLOYEE
+       ===================================================== */
+
+    function addEmployee() {
+
+        alert(
+            "Employee creation form will be implemented next."
+        );
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+       ===================================================== */
+
+    function logout() {
+
+        if (
+            confirm(
+                "Are you sure you want to logout?"
+            )
+        ) {
+
+            window.location.href =
+                "../hrms-login.html";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CURRENT DATE
+       ===================================================== */
+
+    document.getElementById(
+        "currentDate"
+    ).textContent =
+        new Date().toLocaleDateString(
+            "en-IN",
+            {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            }
+        );
+
+
+    /* =====================================================
+       INITIAL LOAD
+       ===================================================== */
+
+    renderEmployees();
+
+</script>
+
+</body>
+
+</html>
