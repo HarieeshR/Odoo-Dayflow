@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Lexend', 'Inter', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --color-ink: #12172b;
+  --color-navy-950: #0b0e1c;
+  --color-navy-900: #12172b;
+  --color-navy-800: #1b2140;
+  --color-navy-700: #262d52;
+  --color-navy-600: #333c68;
+  --color-navy-500: #4a5488;
+  --color-navy-400: #6b74a8;
+  --color-mist-100: #f5f6fb;
+  --color-mist-200: #eceefa;
+  --color-mist-300: #dde1f2;
+
+  /* Card/panel background — swaps to a dark surface in dark mode. */
+  --color-surface: #ffffff;
+
+  /* Fixed brand tones for solid dark buttons/pills. These never invert,
+     so accent buttons keep working correctly in both light and dark mode. */
+  --color-brand-900: #12172b;
+  --color-brand-800: #1b2140;
+
+  --color-amber-50: #fff8ec;
+  --color-amber-100: #ffedc7;
+  --color-amber-400: #f2a93c;
+  --color-amber-500: #e8912a;
+  --color-amber-600: #c9741a;
+
+  --color-sage-500: #4c9a6a;
+  --color-sage-100: #e4f4ea;
+  --color-coral-500: #e05a4e;
+  --color-coral-100: #fbe6e4;
+  --color-sky-500: #3d7fc7;
+  --color-sky-100: #e4eefb;
+}
+
+/* Class-based dark mode: adding "dark" to <html> flips the tokens below,
+   which every existing text-navy-*, bg-navy-900/[x%], border-navy-900/[x%],
+   bg-mist-100 and bg-surface utility already reads from. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark {
+  --color-ink: #e9ebf7;
+  --color-navy-900: #eceefa;
+  --color-navy-800: #d3d7ee;
+  --color-navy-700: #bcc2e4;
+  --color-navy-600: #a3a9d6;
+  --color-navy-500: #8890c4;
+  --color-navy-400: #6f77ab;
+  --color-mist-100: #0b0e1c;
+  --color-surface: #171d38;
+}
+
+@layer base {
+  html { font-family: var(--font-sans); }
+  body {
+    background: var(--color-mist-100);
+    color: var(--color-ink);
+    transition: background-color .15s ease, color .15s ease;
+  }
+  ::selection { background: var(--color-amber-400); color: var(--color-navy-950); }
+  input, textarea, select {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .card { @apply bg-surface rounded-2xl border border-navy-900/[0.06] shadow-[0_1px_2px_rgba(18,23,43,0.04),0_8px_24px_-12px_rgba(18,23,43,0.10)] transition-colors duration-150; }
+  .skeleton { @apply animate-pulse bg-navy-900/[0.06] rounded-md; }
+}
+
+@keyframes dial-sweep {
+  from { stroke-dashoffset: var(--dash-full); }
+  to { stroke-dashoffset: var(--dash-target); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.98); }
+  to { opacity: 1; transform: scale(1); }
+}
