@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dayflow - HR Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-mark">D</div>
+            <div>
+                <h2>Dayflow</h2>
+                <span>HR Management</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="dashboard.html" class="nav-item active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="employees.html" class="nav-item">
+                <span>👥</span>
+                Employees
+            </a>
+
+            <a href="attendance.html" class="nav-item">
+                <span>◷</span>
+                Attendance
+            </a>
+
+            <a href="timeoff.html" class="nav-item">
+                <span>▣</span>
+                Time Off
+            </a>
+
+            <a href="payroll.html" class="nav-item">
+                <span>₹</span>
+                Payroll
+            </a>
+
+            <a href="reports.html" class="nav-item">
+                <span>▤</span>
+                Reports
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="help-box">
+                <strong>Need Help?</strong>
+                <p>Manage your workforce efficiently.</p>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                ⇥ Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p id="currentDate"></p>
+            </div>
+
+            <div class="top-actions">
+
+                <button class="notification-btn" onclick="showNotifications()">
+                    🔔
+                    <span class="notification-count">3</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="avatar">
+                        HR
+                    </div>
+
+                    <div class="profile-info">
+                        <strong>HR Admin</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME -->
+        <section class="welcome">
+
+            <div>
+                <h2>Welcome back, HR Admin 👋</h2>
+                <p>Here's what's happening with your workforce today.</p>
+            </div>
+
+            <button class="primary-btn" onclick="goToEmployees()">
+                + Add Employee
+            </button>
+
+        </section>
+
+
+        <!-- STAT CARDS -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon employees-icon">
+                    👥
+                </div>
+
+                <div>
+                    <span>Total Employees</span>
+                    <h2 id="totalEmployees">120</h2>
+                    <small>Active employees</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon present-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <span>Present Today</span>
+                    <h2 id="presentEmployees">98</h2>
+                    <small class="positive">81.7% attendance</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon absent-icon">
+                    !
+                </div>
+
+                <div>
+                    <span>Absent Today</span>
+                    <h2 id="absentEmployees">10</h2>
+                    <small>Needs attention</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon leave-icon">
+                    ◷
+                </div>
+
+                <div>
+                    <span>On Leave</span>
+                    <h2 id="leaveEmployees">12</h2>
+                    <small>Approved leaves</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN GRID -->
+        <section class="content-grid">
+
+            <!-- ATTENDANCE -->
+            <div class="card attendance-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Attendance Overview</h3>
+                        <p>Today's employee attendance</p>
+                    </div>
+
+                    <select id="attendanceFilter"
+                            onchange="updateAttendanceChart()">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+
+                </div>
+
+
+                <div class="chart-area">
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 80%;"></div>
+                        <span>Mon</span>
+                    </div>
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 88%;"></div>
+                        <span>Tue</span>
+                    </div>
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 75%;"></div>
+                        <span>Wed</span>
+                    </div>
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 92%;"></div>
+                        <span>Thu</span>
+                    </div>
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 82%;"></div>
+                        <span>Fri</span>
+                    </div>
+
+                    <div class="chart-bar">
+                        <div class="bar present" style="height: 60%;"></div>
+                        <span>Sat</span>
+                    </div>
+
+                </div>
+
+                <div class="chart-legend">
+
+                    <span>
+                        <i class="legend-dot present-dot"></i>
+                        Present
+                    </span>
+
+                    <span>
+                        <i class="legend-dot absent-dot"></i>
+                        Absent
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PENDING LEAVES -->
+            <div class="card leave-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Pending Leave Requests</h3>
+                        <p>Requires your approval</p>
+                    </div>
+
+                    <a href="timeoff.html">View All</a>
+
+                </div>
+
+
+                <div id="leaveList" class="leave-list">
+
+                    <div class="leave-item">
+
+                        <div class="employee-avatar">
+                            AR
+                        </div>
+
+                        <div class="leave-details">
+                            <strong>Arun Kumar</strong>
+                            <span>Sick Leave · 22 Aug</span>
+                        </div>
+
+                        <div class="leave-actions">
+
+                            <button
+                                class="approve"
+                                onclick="approveLeave(this)">
+                                ✓
+                            </button>
+
+                            <button
+                                class="reject"
+                                onclick="rejectLeave(this)">
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="leave-item">
+
+                        <div class="employee-avatar">
+                            PS
+                        </div>
+
+                        <div class="leave-details">
+                            <strong>Priya S</strong>
+                            <span>Paid Leave · 23 Aug</span>
+                        </div>
+
+                        <div class="leave-actions">
+
+                            <button
+                                class="approve"
+                                onclick="approveLeave(this)">
+                                ✓
+                            </button>
+
+                            <button
+                                class="reject"
+                                onclick="rejectLeave(this)">
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="leave-item">
+
+                        <div class="employee-avatar">
+                            KV
+                        </div>
+
+                        <div class="leave-details">
+                            <strong>Kavin M</strong>
+                            <span>Sick Leave · 25 Aug</span>
+                        </div>
+
+                        <div class="leave-actions">
+
+                            <button
+                                class="approve"
+                                onclick="approveLeave(this)">
+                                ✓
+                            </button>
+
+                            <button
+                                class="reject"
+                                onclick="rejectLeave(this)">
+                                ×
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT ACTIVITY -->
+        <section class="card activity-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h3>Recent Employee Activity</h3>
+                    <p>Latest updates from your workforce</p>
+                </div>
+
+                <a href="employees.html">View Employees</a>
+
+            </div>
+
+
+            <div class="activity-table">
+
+                <div class="table-header">
+                    <span>Employee</span>
+                    <span>Activity</span>
+                    <span>Department</span>
+                    <span>Date</span>
+                    <span>Status</span>
+                </div>
+
+
+                <div class="table-row">
+
+                    <div class="employee-cell">
+                        <div class="small-avatar">AK</div>
+                        <strong>Arun Kumar</strong>
+                    </div>
+
+                    <span>Leave request submitted</span>
+                    <span>Engineering</span>
+                    <span>22 Aug 2026</span>
+
+                    <span class="status pending">
+                        Pending
+                    </span>
+
+                </div>
+
+
+                <div class="table-row">
+
+                    <div class="employee-cell">
+                        <div class="small-avatar">PS</div>
+                        <strong>Priya S</strong>
+                    </div>
+
+                    <span>Checked in</span>
+                    <span>Human Resources</span>
+                    <span>22 Aug 2026</span>
+
+                    <span class="status active">
+                        Present
+                    </span>
+
+                </div>
+
+
+                <div class="table-row">
+
+                    <div class="employee-cell">
+                        <div class="small-avatar">KM</div>
+                        <strong>Kavin M</strong>
+                    </div>
+
+                    <span>Profile updated</span>
+                    <span>Finance</span>
+                    <span>21 Aug 2026</span>
+
+                    <span class="status active">
+                        Updated
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>

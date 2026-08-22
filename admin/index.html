@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dayflow - Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            DAYFLOW
+        </div>
+
+        <nav>
+
+            <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                🏠 Dashboard
+            </a>
+
+            <a href="#" class="nav-item" onclick="showSection('employees')">
+                👥 Employees
+            </a>
+
+            <a href="#" class="nav-item" onclick="showSection('attendance')">
+                📅 Attendance
+            </a>
+
+            <a href="#" class="nav-item" onclick="showSection('timeoff')">
+                🕒 Time Off
+            </a>
+
+            <a href="#" class="nav-item" onclick="showSection('profile')">
+                👤 My Profile
+            </a>
+
+            <a href="#" class="nav-item admin-only" onclick="showSection('salary')">
+                💰 Salary Info
+            </a>
+
+        </nav>
+
+        <div class="logout">
+            <button onclick="logout()">Logout</button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+                <h1 id="pageTitle">Admin Dashboard</h1>
+                <p>Manage employees and HR activities</p>
+            </div>
+
+            <div class="user-info">
+                <div class="avatar">A</div>
+
+                <div>
+                    <strong>Admin</strong>
+                    <small>HR Officer</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="section active-section">
+
+            <h2>Overview</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <span>👥</span>
+                    <div>
+                        <p>Total Employees</p>
+                        <h2 id="employeeCount">25</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span>🟢</span>
+                    <div>
+                        <p>Present Today</p>
+                        <h2>21</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span>🏖️</span>
+                    <div>
+                        <p>On Leave</p>
+                        <h2>2</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span>⏳</span>
+                    <div>
+                        <p>Pending Requests</p>
+                        <h2 id="pendingCount">4</h2>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h2>Recent Employees</h2>
+
+                    <button onclick="showSection('employees')">
+                        View All
+                    </button>
+                </div>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>EMP001</td>
+                            <td>Arun Kumar</td>
+                            <td>IT</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="small-btn">View</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>EMP002</td>
+                            <td>Priya S</td>
+                            <td>HR</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="small-btn">View</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>EMP003</td>
+                            <td>Karthik R</td>
+                            <td>Finance</td>
+                            <td><span class="status leave">On Leave</span></td>
+                            <td>
+                                <button class="small-btn">View</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- EMPLOYEES -->
+        <section id="employees" class="section">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Employee Management</h2>
+                    <p>Manage all company employees</p>
+                </div>
+
+                <button class="primary-btn" onclick="addEmployee()">
+                    + Add Employee
+                </button>
+
+            </div>
+
+            <input
+                type="text"
+                id="employeeSearch"
+                class="search"
+                placeholder="Search employee..."
+                onkeyup="searchEmployees()"
+            >
+
+            <div class="panel">
+
+                <table id="employeeTable">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>EMP001</td>
+                            <td>Arun Kumar</td>
+                            <td>arun@company.com</td>
+                            <td>IT</td>
+                            <td>Developer</td>
+                            <td><span class="status active">Active</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>EMP002</td>
+                            <td>Priya S</td>
+                            <td>priya@company.com</td>
+                            <td>HR</td>
+                            <td>HR Executive</td>
+                            <td><span class="status active">Active</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>EMP003</td>
+                            <td>Karthik R</td>
+                            <td>karthik@company.com</td>
+                            <td>Finance</td>
+                            <td>Accountant</td>
+                            <td><span class="status leave">On Leave</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATTENDANCE -->
+        <section id="attendance" class="section">
+
+            <h2>Attendance Management</h2>
+            <p>Monitor employee attendance.</p>
+
+            <div class="cards">
+
+                <div class="card">
+                    <span>🟢</span>
+                    <div>
+                        <p>Present</p>
+                        <h2>21</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span>🔴</span>
+                    <div>
+                        <p>Absent</p>
+                        <h2>2</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <span>🏖️</span>
+                    <div>
+                        <p>Leave</p>
+                        <h2>2</h2>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TIME OFF -->
+        <section id="timeoff" class="section">
+
+            <h2>Time Off Requests</h2>
+
+            <div class="panel">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="leaveTable">
+
+                        <tr>
+                            <td>Arun Kumar</td>
+                            <td>28/10/2026</td>
+                            <td>28/10/2026</td>
+                            <td>Paid Time Off</td>
+                            <td>
+                                <span class="status pending">Pending</span>
+                            </td>
+                            <td>
+                                <button
+                                    class="approve"
+                                    onclick="approveLeave(this)">
+                                    Approve
+                                </button>
+
+                                <button
+                                    class="reject"
+                                    onclick="rejectLeave(this)">
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Priya S</td>
+                            <td>30/10/2026</td>
+                            <td>31/10/2026</td>
+                            <td>Sick Leave</td>
+                            <td>
+                                <span class="status pending">Pending</span>
+                            </td>
+                            <td>
+                                <button
+                                    class="approve"
+                                    onclick="approveLeave(this)">
+                                    Approve
+                                </button>
+
+                                <button
+                                    class="reject"
+                                    onclick="rejectLeave(this)">
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROFILE -->
+        <section id="profile" class="section">
+
+            <h2>My Profile</h2>
+
+            <div class="profile-card">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div class="profile-details">
+
+                    <h2>Admin User</h2>
+
+                    <p><strong>Login ID:</strong> ADM001</p>
+                    <p><strong>Email:</strong> admin@company.com</p>
+                    <p><strong>Department:</strong> Human Resources</p>
+                    <p><strong>Role:</strong> HR Officer</p>
+                    <p><strong>Mobile:</strong> +91 XXXXX XXXXX</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SALARY -->
+        <section id="salary" class="section admin-only">
+
+            <h2>Salary Information</h2>
+
+            <p>
+                Salary information is accessible only to Admin/HR.
+            </p>
+
+            <div class="salary-card">
+
+                <label>Monthly Wage</label>
+
+                <input
+                    type="number"
+                    id="wage"
+                    value="50000"
+                    oninput="calculateSalary()"
+                >
+
+                <h3>Salary Components</h3>
+
+                <div class="salary-row">
+                    <span>Basic Salary (50%)</span>
+                    <strong id="basicSalary">₹25,000</strong>
+                </div>
+
+                <div class="salary-row">
+                    <span>HRA (50% of Basic)</span>
+                    <strong id="hra">₹12,500</strong>
+                </div>
+
+                <div class="salary-row">
+                    <span>Standard Allowance</span>
+                    <strong id="standardAllowance">₹4,167</strong>
+                </div>
+
+                <div class="salary-row">
+                    <span>Performance Bonus</span>
+                    <strong id="bonus">₹2,083</strong>
+                </div>
+
+                <div class="salary-row">
+                    <span>Leave Travel Allowance</span>
+                    <strong id="lta">₹2,083</strong>
+                </div>
+
+                <hr>
+
+                <div class="salary-row total">
+                    <span>Total Wage</span>
+                    <strong id="totalSalary">₹50,000</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>
