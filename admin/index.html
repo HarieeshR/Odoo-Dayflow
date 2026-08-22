@@ -400,63 +400,247 @@
         </section>
 
 
-        <!-- SALARY -->
-        <section id="salary" class="section admin-only">
+    <!-- SALARY INFORMATION -->
+    <section id="salary" class="section admin-only">
 
-            <h2>Salary Information</h2>
+        <div class="section-header">
 
-            <p>
-                Salary information is accessible only to Admin/HR.
-            </p>
+            <div>
+                <h2>Salary Information</h2>
+                <p>
+                    Search an employee by name or employee ID
+                    to view salary details.
+                </p>
+            </div>
 
-            <div class="salary-card">
+        </div>
 
-                <label>Monthly Wage</label>
+
+        <!-- EMPLOYEE SEARCH -->
+
+        <div class="salary-search-card">
+
+            <label for="salaryEmployeeSearch">
+                Employee Name / Employee ID
+            </label>
+
+            <div class="salary-search-box">
 
                 <input
-                    type="number"
-                    id="wage"
-                    value="50000"
-                    oninput="calculateSalary()"
+                    type="text"
+                    id="salaryEmployeeSearch"
+                    placeholder="Search by employee name or ID..."
+                    autocomplete="off"
                 >
 
-                <h3>Salary Components</h3>
+                <button
+                    type="button"
+                    onclick="searchSalaryEmployee()">
+                    Search
+                </button>
 
-                <div class="salary-row">
-                    <span>Basic Salary (50%)</span>
-                    <strong id="basicSalary">₹25,000</strong>
+            </div>
+
+            <div
+                id="salarySearchMessage"
+                class="salary-search-message">
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH RESULTS -->
+
+        <div
+            id="salarySearchResults"
+            class="salary-search-results"
+            style="display: none;">
+
+            <h3>Employee</h3>
+
+            <div id="salaryEmployeeResult"></div>
+
+        </div>
+
+
+        <!-- SALARY DETAILS -->
+
+        <div
+            id="salaryDetails"
+            class="salary-card"
+            style="display: none;">
+
+            <div class="salary-employee-header">
+
+                <div>
+
+                    <h2 id="salaryEmployeeName">
+                        -
+                    </h2>
+
+                    <p>
+                        Employee ID:
+                        <strong id="salaryEmployeeId">-</strong>
+                    </p>
+
+                    <p>
+                        Department:
+                        <strong id="salaryEmployeeDepartment">-</strong>
+                    </p>
+
                 </div>
 
-                <div class="salary-row">
-                    <span>HRA (50% of Basic)</span>
-                    <strong id="hra">₹12,500</strong>
-                </div>
 
-                <div class="salary-row">
-                    <span>Standard Allowance</span>
-                    <strong id="standardAllowance">₹4,167</strong>
-                </div>
-
-                <div class="salary-row">
-                    <span>Performance Bonus</span>
-                    <strong id="bonus">₹2,083</strong>
-                </div>
-
-                <div class="salary-row">
-                    <span>Leave Travel Allowance</span>
-                    <strong id="lta">₹2,083</strong>
-                </div>
-
-                <hr>
-
-                <div class="salary-row total">
-                    <span>Total Wage</span>
-                    <strong id="totalSalary">₹50,000</strong>
+                <div class="salary-avatar" id="salaryEmployeeAvatar">
+                    -
                 </div>
 
             </div>
 
-        </section>
+
+            <hr>
+
+
+            <h3>Salary Structure</h3>
+
+
+            <!-- MONTHLY WAGE -->
+
+            <div class="salary-input-row">
+
+                <label for="salaryWage">
+                    Monthly Wage
+                </label>
+
+                <input
+                    type="number"
+                    id="salaryWage"
+                    min="0"
+                    step="100"
+                    oninput="calculateEmployeeSalary()"
+                >
+
+            </div>
+
+
+            <!-- BASIC -->
+
+            <div class="salary-row">
+
+                <span>
+                    Basic Salary (50%)
+                </span>
+
+                <strong id="employeeBasicSalary">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- HRA -->
+
+            <div class="salary-row">
+
+                <span>
+                    HRA (50% of Basic)
+                </span>
+
+                <strong id="employeeHRA">
+                     ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- STANDARD ALLOWANCE -->
+
+            <div class="salary-row">
+
+                <span>
+                    Standard Allowance
+                </span>
+
+                <strong id="employeeStandardAllowance">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- PERFORMANCE BONUS -->
+
+            <div class="salary-row">
+
+                <span>
+                    Performance Bonus
+                </span>
+
+                <strong id="employeeBonus">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- LTA -->
+
+            <div class="salary-row">
+
+                <span>
+                    Leave Travel Allowance
+                </span>
+
+                <strong id="employeeLTA">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- TOTAL -->
+
+            <div class="salary-row total">
+
+                <span>
+                    Total Wage
+                </span>
+
+                <strong id="employeeTotalSalary">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- NO EMPLOYEE SELECTED -->
+
+        <div
+            id="salaryEmptyState"
+            class="salary-empty-state">
+
+            <div class="empty-icon">
+                💰
+            </div>
+
+            <h3>
+                Search for an employee
+            </h3>
+
+            <p>
+                Enter an employee name or employee ID
+                to view their salary information.
+            </p>
+
+        </div>  
+
+
+    </section>
 
     </main>
 
