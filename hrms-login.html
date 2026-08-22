@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HRMS — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo+Condensed:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12151F;
+    --bg-2: #171b28;
+    --paper: #EDEAE2;
+    --paper-dim: #cfccc3;
+    --brass: #B8863B;
+    --teal: #4E7C74;
+    --maroon: #6B2E2E;
+    --accent: var(--brass);
+    --accent-dim: #8a6a3a;
+    --ink-line: rgba(237,234,226,0.14);
+    --transition-role: 550ms cubic-bezier(.6,.05,.15,1);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+
+  body{
+    background:
+      radial-gradient(1100px 700px at 78% 15%, rgba(184,134,58,0.06), transparent 60%),
+      radial-gradient(900px 600px at 10% 90%, rgba(78,124,116,0.06), transparent 55%),
+      var(--bg);
+  }
+
+  .page{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    padding: 28px 44px 0 44px;
+    font-family:'Archivo Condensed', sans-serif;
+    letter-spacing:0.14em;
+    font-size:13px;
+    color: var(--paper-dim);
+    text-transform:uppercase;
+  }
+  .brand .mark{
+    width:9px; height:9px; border-radius:2px;
+    background: var(--accent);
+    transition: background var(--transition-role);
+  }
+
+  .stage{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: clamp(24px, 6vw, 96px);
+    padding: 24px clamp(20px, 6vw, 64px) 56px;
+    max-width: 1280px;
+    margin: 0 auto;
+    width:100%;
+  }
+
+  /* ---- Badge viewport ---- */
+  .badge-viewport{
+    position:relative;
+    width: min(46vw, 460px);
+    height: min(46vw, 460px);
+    max-height: 460px;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .badge-viewport canvas{
+    width:100% !important; height:100% !important;
+    cursor:grab;
+  }
+  .badge-caption{
+    position:absolute;
+    bottom:-6px; left:50%; transform:translateX(-50%);
+    font-family:'Archivo Condensed', sans-serif;
+    font-size:11px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color: var(--paper-dim);
+    opacity:0.55;
+    white-space:nowrap;
+  }
+
+  .badge-fallback{
+    display:none;
+    width: 280px; aspect-ratio: 1.586/1;
+    border-radius:14px;
+    background: linear-gradient(155deg, #f2efe6, #d9d5c8);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.06) inset;
+    position:relative;
+    color:#1c1c1c;
+    padding:18px;
+  }
+  .badge-fallback .stripe{
+    position:absolute; top:38px; left:0; right:0; height:34px;
+    background:#2a2a28;
+  }
+  .badge-fallback .accentbar{
+    position:absolute; top:0; left:0; right:0; height:10px;
+    background: var(--accent);
+  }
+  .badge-fallback .role{
+    position:absolute; bottom:16px; left:18px;
+    font-family:'Archivo Condensed', sans-serif;
+    font-weight:700; letter-spacing:0.08em;
+    font-size: 20px;
+    text-transform:uppercase;
+  }
+
+  /* ---- Panel ---- */
+  .panel{
+    width: min(420px, 92vw);
+  }
+
+  .role-toggle{
+    display:inline-flex;
+    border: 1px solid var(--ink-line);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 34px;
+    background: rgba(255,255,255,0.02);
+  }
+  .role-toggle button{
+    appearance:none; border:none; background:transparent;
+    color: var(--paper-dim);
+    font-family:'Archivo Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor:pointer;
+    transition: color 300ms ease, background 300ms ease;
+  }
+  .role-toggle button.active{
+    color: var(--bg);
+    background: var(--accent);
+    transition: color 300ms ease, background var(--transition-role);
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size: clamp(32px, 4vw, 42px);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.01em;
+  }
+
+  .sub{
+    color: var(--paper-dim);
+    font-size: 14.5px;
+    line-height:1.55;
+    margin: 0 0 32px 0;
+    max-width: 40ch;
+  }
+  .sub .role-word{
+    color: var(--accent);
+    transition: color var(--transition-role);
+  }
+
+  form{ display:flex; flex-direction:column; gap:22px; }
+
+  .field{
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .field label{
+    font-family:'Archivo Condensed', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform:uppercase;
+    color: var(--paper-dim);
+  }
+  .field input{
+    background: transparent;
+    border:none;
+    border-bottom: 1px solid var(--ink-line);
+    color: var(--paper);
+    font-family:'Inter', sans-serif;
+    font-size: 15px;
+    padding: 8px 2px 10px 2px;
+    outline: none;
+    transition: border-color 220ms ease;
+  }
+  .field input:focus{
+    border-color: var(--accent);
+  }
+  .field input::placeholder{ color: rgba(237,234,226,0.28); }
+
+  .row-between{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size: 13px;
+    margin-top: -6px;
+  }
+  .check{
+    display:flex; align-items:center; gap:8px;
+    color: var(--paper-dim);
+    cursor:pointer; user-select:none;
+  }
+  .check input{ accent-color: var(--accent); }
+  .link{
+    color: var(--paper-dim);
+    text-decoration:none;
+    border-bottom: 1px solid transparent;
+    transition: color 200ms, border-color 200ms;
+  }
+  .link:hover{ color: var(--paper); border-color: var(--ink-line); }
+
+  .submit{
+    margin-top: 6px;
+    appearance:none; border:none;
+    background: var(--accent);
+    color: var(--bg);
+    font-family:'Archivo Condensed', sans-serif;
+    font-weight:600;
+    letter-spacing: 0.08em;
+    text-transform:uppercase;
+    font-size: 14px;
+    padding: 15px 20px;
+    border-radius: 6px;
+    cursor:pointer;
+    transition: background var(--transition-role), transform 120ms ease;
+  }
+  .submit:hover{ transform: translateY(-1px); }
+  .submit:active{ transform: translateY(0); }
+  .submit:focus-visible, .field input:focus-visible, .link:focus-visible, .role-toggle button:focus-visible{
+    outline: 2px solid var(--paper);
+    outline-offset: 3px;
+  }
+
+  .error{
+    display:none;
+    font-size: 13px;
+    color: #e2b3ab;
+    background: rgba(107,46,46,0.25);
+    border: 1px solid rgba(107,46,46,0.6);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .error.show{ display:block; }
+
+  .footnote{
+    margin-top: 30px;
+    font-size: 12.5px;
+    color: rgba(237,234,226,0.42);
+    line-height:1.6;
+  }
+
+  @media (max-width: 860px){
+    .stage{ flex-direction:column; padding-top:8px; }
+    .badge-viewport{ width:min(70vw,320px); height:min(70vw,320px); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="brand"><span class="mark"></span> Odoo India · Access Terminal</div>
+
+  <div class="stage">
+    <div class="badge-viewport" id="badgeViewport">
+      <canvas id="badgeCanvas"></canvas>
+      <div class="badge-fallback" id="badgeFallback">
+        <div class="accentbar"></div>
+        <div class="stripe"></div>
+        <div class="role" id="fallbackRole">HR ADMIN</div>
+      </div>
+      <div class="badge-caption">Drag to inspect badge</div>
+    </div>
+
+    <div class="panel">
+      <div class="role-toggle" role="tablist" aria-label="Sign in as">
+        <button type="button" class="active" data-role="admin" role="tab" aria-selected="true">HR / Admin</button>
+        <button type="button" data-role="employee" role="tab" aria-selected="false">Employee</button>
+      </div>
+
+      <h1>Sign in</h1>
+      <p class="sub">Signing in as <span class="role-word" id="roleWord">HR / Admin</span>. Use the credentials issued with your badge.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginId">Login ID or email</label>
+          <input id="loginId" name="loginId" type="text" placeholder="OIJODO20220001" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+
+        <div class="row-between">
+          <label class="check"><input type="checkbox" /> Keep me signed in</label>
+          <a class="link" href="#">Forgot password?</a>
+        </div>
+
+        <div class="error" id="errorBox">Incorrect login ID or password.</div>
+
+        <button type="submit" class="submit">Sign in</button>
+      </form>
+
+      <p class="footnote">Badges are issued by HR — there is no self-registration. If you're new, ask your HR officer to create your account; your login ID and a temporary password will be generated automatically.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var ROLE = {
+    admin: {
+      label: "HR / Admin",
+      accent: "#B8863B",
+      accentDim: "#8a6a3a",
+      titleLine1: "ACCESS BADGE",
+      titleLine2: "HR ADMIN",
+      idPrefix: "OI-A"
+    },
+    employee: {
+      label: "Employee",
+      accent: "#4E7C74",
+      accentDim: "#37564f",
+      titleLine1: "ACCESS BADGE",
+      titleLine2: "EMPLOYEE",
+      idPrefix: "OI-E"
+    }
+  };
+
+  var currentRole = "admin";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- DOM wiring ----------
+  var roleWordEl = document.getElementById("roleWord");
+  var fallbackRoleEl = document.getElementById("fallbackRole");
+  var toggleBtns = document.querySelectorAll(".role-toggle button");
+  var errorBox = document.getElementById("errorBox");
+  var form = document.getElementById("loginForm");
+
+  function applyAccent(role){
+    var r = ROLE[role];
+    document.documentElement.style.setProperty("--accent", r.accent);
+    document.documentElement.style.setProperty("--accent-dim", r.accentDim);
+    roleWordEl.textContent = r.label;
+    fallbackRoleEl.textContent = r.label.toUpperCase();
+  }
+
+  function setActiveTab(role){
+    toggleBtns.forEach(function(btn){
+      var isActive = btn.dataset.role === role;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+  }
+
+  toggleBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var role = btn.dataset.role;
+      if(role === currentRole) return;
+      currentRole = role;
+      setActiveTab(role);
+      applyAccent(role);
+      errorBox.classList.remove("show");
+      if(window.__flipBadge) window.__flipBadge(role);
+    });
+  });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var id = document.getElementById("loginId").value.trim();
+    var pw = document.getElementById("password").value;
+    if(!id || !pw){
+      errorBox.textContent = "Enter both a login ID and a password.";
+      errorBox.classList.add("show");
+      return;
+    }
+    // Demo only — no backend wired here.
+    errorBox.textContent = "Incorrect login ID or password.";
+    errorBox.classList.add("show");
+  });
+
+  applyAccent(currentRole);
+
+  // ---------- WebGL availability check ----------
+  function hasWebGL(){
+    try{
+      var c = document.createElement("canvas");
+      return !!(window.WebGLRenderingContext && (c.getContext("webgl") || c.getContext("experimental-webgl")));
+    }catch(e){ return false; }
+  }
+
+  if(!hasWebGL()){
+    document.getElementById("badgeCanvas").style.display = "none";
+    document.getElementById("badgeFallback").style.display = "block";
+    return; // 2D fallback only, skip all Three.js setup
+  }
+
+  // ---------- Texture drawing ----------
+  function roundRectPath(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawFrontTexture(roleKey){
+    var r = ROLE[roleKey];
+    var W = 860, H = 542; // CR80-ish ratio
+    var cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    var ctx = cv.getContext("2d");
+
+    // base card
+    roundRectPath(ctx, 0, 0, W, H, 26);
+    var bg = ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0, "#f4f1e9");
+    bg.addColorStop(1, "#e2ded2");
+    ctx.fillStyle = bg;
+    ctx.fill();
+
+    // accent header bar
+    roundRectPath(ctx, 0, 0, W, 96, 26);
+    ctx.save();
+    ctx.clip();
+    ctx.fillStyle = r.accent;
+    ctx.fillRect(0,0,W,96);
+    ctx.restore();
+
+    ctx.fillStyle = "rgba(255,255,255,0.92)";
+    ctx.font = "600 26px 'Archivo Condensed', sans-serif";
+    ctx.textBaseline = "middle";
+    ctx.fillText(r.titleLine1, 34, 50);
+
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.font = "500 18px 'Archivo Condensed', sans-serif";
+    ctx.fillText("ODOO INDIA — HUMAN RESOURCES", 34, 78);
+
+    // photo placeholder
+    var px = 60, py = 150, pr = 70;
+    ctx.fillStyle = "#c9c4b5";
+    ctx.beginPath(); ctx.arc(px+pr, py+pr, pr, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#a9a390";
+    ctx.beginPath(); ctx.arc(px+pr, py+pr-14, pr*0.42, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(px+pr, py+pr+pr*0.62, pr*0.62, pr*0.46, 0, Math.PI, 0, true); ctx.fill();
+
+    // name / role lines
+    ctx.fillStyle = "#2a271f";
+    ctx.font = "600 34px 'Fraunces', serif";
+    ctx.fillText("[ Employee Name ]", 230, 178);
+
+    ctx.fillStyle = r.accent;
+    ctx.font = "700 24px 'Archivo Condensed', sans-serif";
+    ctx.fillText(r.titleLine2, 230, 220);
+
+    ctx.fillStyle = "#6d6858";
+    ctx.font = "500 18px 'Archivo Condensed', sans-serif";
+    ctx.fillText("ID  " + r.idPrefix + "-2026-0417", 230, 256);
+
+    // chip
+    var cx = 60, cy = 300, cw = 84, ch = 62;
+    roundRectPath(ctx, cx, cy, cw, ch, 8);
+    var chipGrad = ctx.createLinearGradient(cx,cy,cx+cw,cy+ch);
+    chipGrad.addColorStop(0, "#e7c675");
+    chipGrad.addColorStop(1, "#a9843a");
+    ctx.fillStyle = chipGrad;
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.25)";
+    ctx.lineWidth = 1.5;
+    for(var i=1;i<3;i++){
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + (ch/3)*i);
+      ctx.lineTo(cx+cw, cy + (ch/3)*i);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.moveTo(cx+cw/2, cy);
+    ctx.lineTo(cx+cw/2, cy+ch);
+    ctx.stroke();
+
+    // footer barcode-ish lines
+    var bx = 60, by = H-70;
+    for(var j=0;j<48;j++){
+      var w = (j % 5 === 0) ? 4 : 2;
+      ctx.fillStyle = (j % 7 === 0) ? r.accent : "#2a271f";
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(bx, by, w, 34);
+      bx += w + 5;
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = "#8a8471";
+    ctx.font = "500 15px 'Archivo Condensed', sans-serif";
+    ctx.fillText("VALID THRU 12/2027", W-230, H-30);
+
+    var tex = new THREE.CanvasTexture(cv);
+    tex.anisotropy = 4;
+    tex.needsUpdate = true;
+    return tex;
+  }
+
+  function drawBackTexture(roleKey){
+    var r = ROLE[roleKey];
+    var W = 860, H = 542;
+    var cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    var ctx = cv.getContext("2d");
+
+    roundRectPath(ctx, 0, 0, W, H, 26);
+    ctx.fillStyle = "#e2ded2";
+    ctx.fill();
+
+    // magstripe
+    ctx.fillStyle = "#231f1c";
+    ctx.fillRect(0, 46, W, 82);
+
+    // signature strip
+    var sx = 60, sy = 190, sw = W-120, sh = 74;
+    ctx.fillStyle = "#f4f1e9";
+    ctx.fillRect(sx, sy, sw, sh);
+    ctx.strokeStyle = "rgba(0,0,0,0.15)";
+    ctx.strokeRect(sx, sy, sw, sh);
+    ctx.fillStyle = "#9a9484";
+    ctx.font = "italic 500 20px 'Fraunces', serif";
+    ctx.fillText("authorized signature", sx+16, sy+sh-14);
+
+    // fine print lines
+    ctx.fillStyle = "#8a8471";
+    ctx.font = "400 14px 'Archivo Condensed', sans-serif";
+    var lines = [
+      "This badge remains property of Odoo India.",
+      "If found, please return to Human Resources.",
+      "Report loss immediately to your HR officer.",
+      "Unauthorized use of this badge is prohibited."
+    ];
+    lines.forEach(function(line, i){
+      ctx.fillText(line, 60, 310 + i*26);
+    });
+
+    ctx.fillStyle = r.accent;
+    ctx.font = "700 20px 'Archivo Condensed', sans-serif";
+    ctx.fillText("ODOO INDIA · " + r.titleLine2, 60, H-40);
+
+    var tex = new THREE.CanvasTexture(cv);
+    tex.anisotropy = 4;
+    tex.needsUpdate = true;
+    return tex;
+  }
+
+  function edgeMaterial(colorHex){
+    return new THREE.MeshStandardMaterial({
+      color: new THREE.Color(colorHex),
+      metalness: 0.55,
+      roughness: 0.35
+    });
+  }
+
+  // ---------- Three.js setup ----------
+  var viewport = document.getElementById("badgeViewport");
+  var canvas = document.getElementById("badgeCanvas");
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 0, 9);
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  if(renderer.outputColorSpace !== undefined){ renderer.outputColorSpace = THREE.SRGBColorSpace; }
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+
+  function resize(){
+    var w = viewport.clientWidth, h = viewport.clientHeight;
+    if(w === 0 || h === 0) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", resize);
+
+  // lights
+  scene.add(new THREE.HemisphereLight(0xfff2d9, 0x14151c, 0.55));
+  var key = new THREE.DirectionalLight(0xffffff, 1.05);
+  key.position.set(4, 5, 6);
+  scene.add(key);
+  var rim = new THREE.DirectionalLight(0xB8863B, 0.5);
+  rim.position.set(-5, -2, -4);
+  scene.add(rim);
+  var fill = new THREE.PointLight(0xffffff, 0.35);
+  fill.position.set(-3, 1, 4);
+  scene.add(fill);
+
+  // badge geometry: rounded-ish box via bevel-less box + separate front/back planes for crisp texture
+  var W = 3.4, H = 2.145, D = 0.07;
+
+  var group = new THREE.Group();
+  scene.add(group);
+
+  var edgeMat = edgeMaterial(ROLE[currentRole].accent);
+  var bodyGeo = new THREE.BoxGeometry(W, H, D, 1, 1, 1);
+  // materials order: +x,-x,+y,-y,+z(front),-z(back)
+  var frontTex = drawFrontTexture(currentRole);
+  var backTex = drawBackTexture(currentRole);
+  var frontMat = new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.55, metalness: 0.05 });
+  var backMat = new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.55, metalness: 0.05 });
+
+  var materials = [edgeMat, edgeMat, edgeMat, edgeMat, frontMat, backMat];
+  var badge = new THREE.Mesh(bodyGeo, materials);
+  group.add(badge);
+
+  // small lanyard hole detail
+  var holeGeo = new THREE.TorusGeometry(0.075, 0.018, 8, 24);
+  var holeMat = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, metalness: 0.6, roughness: 0.4 });
+  var hole = new THREE.Mesh(holeGeo, holeMat);
+  hole.position.set(0, H/2 - 0.16, 0);
+  group.add(hole);
+
+  group.rotation.x = -0.12;
+  group.rotation.y = 0.35;
+
+  // ---------- interaction: idle spin + pointer parallax + drag ----------
+  var idleSpeed = reduceMotion ? 0 : 0.0035;
+  var baseY = group.rotation.y;
+  var baseX = group.rotation.x;
+  var targetParallaxX = 0, targetParallaxY = 0;
+  var curParallaxX = 0, curParallaxY = 0;
+
+  var dragging = false, lastX = 0, lastY = 0;
+  var dragRotY = 0, dragRotX = 0;
+
+  canvas.addEventListener("pointerdown", function(e){
+    dragging = true;
+    canvas.style.cursor = "grabbing";
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  window.addEventListener("pointerup", function(){
+    dragging = false;
+    canvas.style.cursor = "grab";
+  });
+  window.addEventListener("pointermove", function(e){
+    if(dragging){
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      dragRotY += dx * 0.008;
+      dragRotX += dy * 0.006;
+      dragRotX = Math.max(-0.6, Math.min(0.6, dragRotX));
+    } else {
+      var rect = viewport.getBoundingClientRect();
+      var nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      var ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+      if(e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom){
+        targetParallaxY = nx * 0.35;
+        targetParallaxX = -ny * 0.2;
+      } else {
+        targetParallaxY = 0; targetParallaxX = 0;
+      }
+    }
+  });
+
+  // ---------- role flip ----------
+  var flipping = false;
+  var flipStart = 0, flipDuration = 700;
+  var flipFromY = 0, flipToY = 0;
+  var pendingRole = null;
+  var swapped = false;
+
+  function easeInOutCubic(t){
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+  }
+
+  window.__flipBadge = function(newRole){
+    if(flipping) return;
+    pendingRole = newRole;
+    swapped = false;
+    flipping = true;
+    flipStart = performance.now();
+    flipFromY = dragRotY;
+    flipToY = dragRotY + Math.PI;
+    edgeMat.color.set(ROLE[newRole].accent);
+
+    if(reduceMotion){
+      // instant swap, no animated flip
+      frontMat.map = drawFrontTexture(newRole);
+      backMat.map = drawBackTexture(newRole);
+      frontMat.needsUpdate = true;
+      backMat.needsUpdate = true;
+      flipping = false;
+      dragRotY = flipToY % (Math.PI*2);
+    }
+  };
+
+  function updateFlip(now){
+    if(!flipping || reduceMotion) return;
+    var t = Math.min(1, (now - flipStart) / flipDuration);
+    var e = easeInOutCubic(t);
+    dragRotY = flipFromY + (flipToY - flipFromY) * e;
+
+    if(!swapped && t >= 0.5){
+      swapped = true;
+      frontMat.map = drawFrontTexture(pendingRole);
+      backMat.map = drawBackTexture(pendingRole);
+      frontMat.needsUpdate = true;
+      backMat.needsUpdate = true;
+    }
+    if(t >= 1){
+      flipping = false;
+      dragRotY = flipToY % (Math.PI * 2);
+    }
+  }
+
+  // ---------- render loop ----------
+  function animate(now){
+    requestAnimationFrame(animate);
+    resize();
+
+    if(!dragging) baseY += idleSpeed;
+
+    curParallaxX += (targetParallaxX - curParallaxX) * 0.06;
+    curParallaxY += (targetParallaxY - curParallaxY) * 0.06;
+
+    updateFlip(now || performance.now());
+
+    group.rotation.y = baseY + dragRotY + curParallaxY;
+    group.rotation.x = baseX + dragRotX + curParallaxX;
+
+    renderer.render(scene, camera);
+  }
+
+  resize();
+  requestAnimationFrame(animate);
+
+})();
+</script>
+</body>
+</html>
